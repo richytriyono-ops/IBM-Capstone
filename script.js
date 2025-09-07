@@ -131,6 +131,38 @@ function resetForm() {
     // form.classList.add('hidden'); 
 }
 
+// --- STATE MANAGEMENT ---
+// ... (no changes here)
+
+// --- DOM ELEMENT SELECTORS ---
+const form = document.getElementById('add-expense-form');
+const showFormButton = document.getElementById('show-form-btn'); // ADD THIS LINE
+const descriptionInput = document.getElementById('description');
+// ... (rest of the selectors are the same)
+const submitButton = form.querySelector('button[type="submit"]');
+
+// --- EVENT LISTENERS ---
+
+// ADD THIS NEW EVENT LISTENER for the "Add New Expense" button
+showFormButton.addEventListener('click', () => {
+    resetForm(); // We call resetForm to make sure it's a blank "Add" form
+    form.classList.remove('hidden'); // Show the form
+});
+
+// The existing form 'submit' listener stays exactly the same
+form.addEventListener('submit', (e) => {
+    // ... (no changes in this block)
+});
+
+
+
+ */
+function resetForm() {
+    form.reset(); 
+    currentlyEditingId = null; 
+    submitButton.textContent = 'Add';
+    form.classList.add('hidden'); 
+}
 
 // --- INITIALIZATION ---
 // Initial render of the expenses when the page loads.
