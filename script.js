@@ -177,7 +177,13 @@ function updateExpense(e) {
 function saveExpenses() {
     localStorage.setItem('expenses', JSON.stringify(expenses));
 }
+const expenseForm = document.getElementById('expense-form');
+console.log('Expense form element:', expenseForm); // If this logs "null", the ID is wrong or the script ran too early.
 
+// This will cause an error if expenseForm is null:
+expenseForm.addEventListener('submit', function(e) { 
+    // ...
+});
 // Initialize the expense list on page load
 const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
 initExpenseList();
