@@ -1,4 +1,72 @@
 // Function to initialize the expense list
+// ... (previous existing code)
+
+let selectedExpenseId;
+
+// Event listener for 'Edit' buttons
+document.querySelectorAll('.edit-btn').forEach(button => {
+    button.addEventListener('click', () => handleEdit(button));
+});
+
+// Handle editing an expense
+function handleEdit(button) {
+    const expenseId = button.dataset.id;
+    const expenseIndex = expenses.findIndex(expense => expense.timestamp === parseInt(expenseId));
+
+    if (expenseIndex !== -1) {
+        const expenseToEdit = expenses[expenseIndex];
+        populateForm(expenseToEdit);
+        document.getElementById('add-expense-form').submit.textContent = 'Save Changes';
+        selectedExpenseId = expenseId;
+        document.getElementById('add-expense-form').classList.remove('hidden');
+    } else {
+        alert('Expense not found for editing!');
+    }
+}
+
+// Populate the form with an expense's details
+function populateForm(expense) {
+    document.getElementById('description').value = expense.description;
+    document.getElementById('category').value = expense.category;
+    document.getElementById('amount').value = expense.amount;
+    document.getElementById('date').value = expense.date;
+}
+
+// Adjusted form submission listener for add/update
+document.getElementById('add-expense-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if (selectedExpenseId) {
+        updateExpense(e);
+    } else {
+        addExpense(e);
+    }
+});
+
+// Function to update an expense in localStorage
+function updateExpense(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    expenses = expenses.map(expense => 
+        expense.timestamp === selectedExpenseId ? { ...formData.get('description'), category: formData.get('category'), amount: parseFloat(formData.get('amount')), date: formData.get('date'), timestamp: Date.now() } : expense
+    );
+    saveExpenses();
+    clearForm();
+    initExpenseList(); // Refresh expense list
+}
+
+// Function to clear and reset form fields
+function clearForm() {
+    document.getElementById('add-expense-form').querySelectorAll('input, select').forEach(input => input.value = '');
+    document.getElementById('add-expense-form').submit.textContent = 'Add Expense';
+    document.getElementById('add-expense-form').classList.add('hidden');
+}
+
+// ... (existing addExpense and saveExpenses functions remain unchanged)
+
+// Initialize expense list when page loads or after modifications
+initExpenseList();
+
 function initExpenseList() {
     const expensesList = document.getElementById('expenses');
     let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
