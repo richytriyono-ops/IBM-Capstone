@@ -1,3 +1,32 @@
+document.getElementById('add-expense-form').addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent default form submission action
+    addExpense(e); // Explicitly call addExpense function
+});
+
+function addExpense(e) {
+    console.log('addExpense function triggered');
+    const formData = new FormData(e.target);
+
+    if (formData.get('description') && 
+        formData.get('category') && 
+        formData.get('amount') && 
+        formData.get('date')) {
+
+        const newExpense = {
+            description: formData.get('description'),
+            category: formData.get('category'),
+            amount: parseFloat(formData.get('amount')),
+            date: formData.get('date'),
+            timestamp: Date.now()
+        };
+        expenses.push(newExpense);
+        saveExpenses();
+        clearForm();
+        initExpenseList(); // Refresh the list after adding
+    } else {
+        alert('Please fill in all fields.');
+    }
+}
 // Load expenses on page load
 document.addEventListener('DOMContentLoaded', (event) => {
     loadExpenses();
