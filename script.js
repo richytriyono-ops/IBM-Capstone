@@ -33,7 +33,7 @@ function addExpense(e) {
         formData.get('category') && 
         formData.get('amount') && 
         formData.get('date')) {
-
+        
         const newExpense = {
             description: formData.get('description'),
             category: formData.get('category'),
@@ -44,7 +44,7 @@ function addExpense(e) {
         expenses.push(newExpense);
         saveExpenses();
         clearForm();
-        initExpenseList();
+        initExpenseList(); // Refresh the list after adding
     } else {
         alert('Please fill in all fields.');
     }
@@ -119,29 +119,4 @@ function renderExpense(expense) {
         <td>${expense.amount}</td>
         <td>${expense.date}</td>
         <td>
-            <button class="edit-btn" data-id="${expense.timestamp}">Edit</button>
-            <button class="delete-btn">Delete</button>
-        </td>
-    `;
-
-    row.querySelector('.delete-btn').addEventListener('click', () => deleteExpense(expense));
-    row.querySelector('.edit-btn').addEventListener('click', () => handleEdit(row.querySelector('.edit-btn')));
-
-    document.getElementById('expenses').appendChild(row);
-}
-
-// Form clearing function
-function clearForm() {
-    document.getElementById('add-expense-form').querySelectorAll('input, select').forEach(input => input.value = '');
-    document.getElementById('add-expire-form').submit.textContent = 'Add Expense';
-    document.getElementById('add-expense-form').classList.add('hidden');
-}
-
-// Event listener for form submission
-document.getElementById('add-expense-form').addEventListener('submit', addExpense);
-document.querySelectorAll('.edit-btn').forEach(button => {
-    button.addEventListener('click', () => handleEdit(button));
-});
-
-loadExpenses(); // Initial data load
-initExpenseList(); // Initial list rendering
+            <button class="edit-btn" data-id="${expense.timestamp}">Edit
